@@ -1,58 +1,218 @@
 @page "/"
+@using System.Text
+@using System.Text.Json
+@using LicenseGeneratorBlazor.Models
+@using LicenseGeneratorBlazor.Services
+@using Microsoft.JSInterop
+
+@inject ProfileStorageService ProfileStorage
+@inject IJSRuntime JS
 
 <PageTitle>PB BZH License Generator</PageTitle>
-<div class="license-page">
-    <h1>PB BZH License Generator</h1>
-    <p>Génération de licences signées</p>
+<div class="app-shell @(DarkTheme ? "dark-theme" : "")">
 
-    <div class="license-form">
+    <div class="license-page">
 
-        <div class="left-column">
+        <nav class="app-menu">
 
-            <label>Produit :</label>
-            <input @bind="ProductId" />
+            <!-- Fichier -->
+            <div class="menu-item">
+                <button type="button"
+                        class="menu-title"
+                        @onclick='() => ToggleMenu("file")'>
+                    Fichier
+                </button>
 
-            <label>Licence ID :</label>
-            <input @bind="LicenseId" />
+                <div class="menu-dropdown @(_openMenu == "file" ? "open" : "")">
 
-            <label>Client :</label>
-            <input @bind="CustomerName" />
+                    <button @onclick="NewLicense">
+                        Nouveau
+                    </button>
 
-            <label>Site :</label>
-            <input @bind="Site" />
+                    <div class="menu-separator"></div>
 
-            <label>Email :</label>
-            <input @bind="EmailContact" />
+                    <button @onclick="SaveProfile">
+                        Enregistrer profil
+                    </button>
 
-            <label>Machine Hash :</label>
-            <input @bind="MachineHash" />
+                    <button @onclick="LoadProfile">
+                        Charger profil
+                    </button>
+
+                    <button @onclick="DeleteProfile">
+                        Supprimer profil
+                    </button>
+
+                    <div class="menu-separator"></div>
+
+                    <button @onclick="ImportPrivateKey">
+                        Importer clé privée
+                    </button>
+
+                    <button @onclick="OpenLicenseFolder">
+                        Ouvrir dossier licences
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- Options -->
+            <div class="menu-item">
+                <button type="button"
+                        class="menu-title"
+                        @onclick='() => ToggleMenu("options")'>
+                    Options
+                </button>
+
+                <div class="menu-dropdown @(_openMenu == "options" ? "open" : "")">
+
+                    <button @onclick="ToggleDarkTheme">
+                        <span class="menu-check">
+                            @(DarkTheme ? "✓" : "")
+                        </span>
+                        Thème sombre
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- Help -->
+            <div class="menu-item">
+                <button type="button"
+                        class="menu-title"
+                        @onclick='() => ToggleMenu("help")'>
+                    Help
+                </button>
+
+                <div class="menu-dropdown @(_openMenu == "help" ? "open" : "")">
+
+                    <button @onclick="ShowAbout">
+                        About
+                    </button>
+
+                    <button @onclick="CheckForUpdate">
+                        Recherche de mise à jour
+                    </button>
+
+                    <div class="menu-separator"></div>
+
+                    <button @onclick="ShowLicense">
+                        License...
+                    </button>
+
+                    <button @onclick="ImportNewLicense">
+                        Import new license
+                    </button>
+
+                </div>
+            </div>
+
+        </nav>
+
+        <h1>PB BZH License Generator</h1>
+        <p>Génération de licences signées</p>
+
+        <div class="license-form">
+
+            <div class="left-column">
+
+                <label>Produit :</label>
+                <input @bind="ProductId" />
+
+                <label>Licence ID :</label>
+                <input @bind="LicenseId" />
+
+                <label>Client :</label>
+                <input @bind="CustomerName" />
+
+                <label>Site :</label>
+                <input @bind="Site" />
+
+                <label>Email :</label>
+                <input @bind="EmailContact" />
+
+                <label>Machine Hash :</label>
+                <input @bind="MachineHash" />
+
+            </div>
+
+            <div class="right-column">
+
+                <label>Validité :</label>
+                <input type="date"
+                       @bind="ValidUntil" />
+
+                <label class="checkbox-row">
+                    <input type="checkbox"
+                           @bind="ValidUnlimited" />
+                    Licence illimitée
+                </label>
+
+                <label>Maintenance :</label>
+                <input type="date"
+                       @bind="MaintenanceUntil" />
+
+                <label class="checkbox-row">
+                    <input type="checkbox"
+                           @bind="MaintenanceUnlimited" />
+                    Maintenance illimitée
+                </label>
+
+            </div>
 
         </div>
 
-        <div class="right-column">
+        <div class="actions">
 
-            <label>Validité :</label>
-            <input type="date"
-                   @bind="ValidUntil" />
+            <div class="button-row">
+                <button @onclick="NewLicense">
+                    Nouveau
+                </button>
 
-            <label class="checkbox-row">
-                <input type="checkbox"
-                       @bind="ValidUnlimited" />
-                Licence illimitée
-            </label>
+                <button @onclick="SaveProfile">
+                    Enregistrer profil
+                </button>
 
-            <label>Maintenance :</label>
-            <input type="date"
-                   @bind="MaintenanceUntil" />
+                <button @onclick="LoadProfile">
+                    Charger profil
+                </button>
 
-            <label class="checkbox-row">
-                <input type="checkbox"
-                       @bind="MaintenanceUnlimited" />
-                Maintenance illimitée
-            </label>
+                <button @onclick="DeleteProfile">
+                    Supprimer profil
+                </button>
+            </div>
+
+            <div class="button-row">
+                <button @onclick="ImportPrivateKey">
+                    Importer clé privée
+                </button>
+
+                <button @onclick="OpenLicenseFolder">
+                    Ouvrir dossier
+                </button>
+
+                <button class="primary-button"
+                        @onclick="GenerateLicense">
+                    Générer
+                </button>
+            </div>
 
         </div>
 
+        <div class="result-section">
+
+            <label class="result-title">
+                Licence générée / JSON :
+            </label>
+
+            <textarea class="result-box"
+                      @bind="Result"
+                      readonly>
+    </textarea>
+
+        </div>
     </div>
 </div>
 
@@ -70,4 +230,127 @@
 
     private bool ValidUnlimited;
     private bool MaintenanceUnlimited;
+    private string Result = "";
+
+    private bool DarkTheme;
+    private string? _openMenu;
+    private static readonly JsonSerializerOptions JsonOptions =
+    new() {
+        WriteIndented = true
+    };
+
+    private void NewLicense() {
+
+        ProductId = "";
+        LicenseId = "";
+        CustomerName = "";
+        Site = "";
+        EmailContact = "";
+        MachineHash = "";
+
+        ValidUntil = DateTime.Today;
+        MaintenanceUntil = DateTime.Today;
+
+        ValidUnlimited = false;
+        MaintenanceUnlimited = false;
+
+        Result = "";
+
+        CloseMenu();
+    }
+
+    private async Task SaveProfile() {
+
+        LicenseProfile profile = new() {
+
+            ProductId = ProductId,
+            LicenseId = LicenseId,
+            CustomerName = CustomerName,
+            Site = Site,
+            EmailContact = EmailContact,
+            MachineHash = MachineHash,
+
+            ValidUntil = ValidUntil,
+            ValidUnlimited = ValidUnlimited,
+
+            MaintenanceUntil = MaintenanceUntil,
+            MaintenanceUnlimited = MaintenanceUnlimited
+        };
+
+        Result =
+            await ProfileStorage.SaveAsync(profile);
+
+        CloseMenu();
+    }
+
+    private void LoadProfile() {
+        CloseMenu();
+    }
+
+    private void DeleteProfile() {
+        CloseMenu();
+    }
+
+    private void ImportPrivateKey() {
+        CloseMenu();
+    }
+
+    private void OpenLicenseFolder() {
+        CloseMenu();
+    }
+
+    private async Task ToggleDarkTheme() {
+        DarkTheme = !DarkTheme;
+
+        await JS.InvokeVoidAsync(
+            "localStorage.setItem",
+            "licenseGenerator.darkTheme",
+            DarkTheme.ToString());
+
+        CloseMenu();
+    }
+
+    private void ShowAbout() {
+        CloseMenu();
+    }
+
+    private void CheckForUpdate() {
+        CloseMenu();
+    }
+
+    private void ShowLicense() {
+        CloseMenu();
+    }
+
+    private void ImportNewLicense() {
+        CloseMenu();
+    }
+    private void GenerateLicense() {
+    }
+
+    private void ToggleMenu(string menuName) {
+        _openMenu = _openMenu == menuName
+            ? null
+            : menuName;
+    }
+
+    private void CloseMenu() {
+        _openMenu = null;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+
+        if (!firstRender)
+            return;
+
+        string? savedTheme =
+            await JS.InvokeAsync<string?>(
+                "localStorage.getItem",
+                "licenseGenerator.darkTheme");
+
+        if (bool.TryParse(savedTheme,out bool darkTheme)) {
+            DarkTheme = darkTheme;
+            StateHasChanged();
+        }
+    }
 }

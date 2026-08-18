@@ -209,3 +209,6 @@ _ReSharper*/
 # ------------------------------------------------------------
 
 BenchmarkDotNet.Artifacts/
+
+# Données générées par License Generator
+Data/Profiles/*

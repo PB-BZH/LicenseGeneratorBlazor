@@ -1,0 +1,12 @@
+﻿{
+  "ProductId": "PB.BZH.Help",
+  "LicenseId": "TEST-0001",
+  "CustomerName": "Patrick",
+  "Site": "PB-BZH",
+  "EmailContact": "admin@pb-bzh-concept.fr",
+  "MachineHash": "ABCDEF123456",
+  "ValidUntil": "2026-08-18T00:00:00+02:00",
+  "ValidUnlimited": false,
+  "MaintenanceUntil": "2026-08-18T00:00:00+02:00",
+  "MaintenanceUnlimited": false
+}

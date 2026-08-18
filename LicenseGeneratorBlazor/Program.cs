@@ -1,10 +1,13 @@
 using LicenseGeneratorBlazor.Components;
+using LicenseGeneratorBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSingleton<ProfileStorageService>();
 
 var app = builder.Build();
 

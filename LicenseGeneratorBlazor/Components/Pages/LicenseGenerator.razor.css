@@ -2,11 +2,136 @@
     display: block;
 }
 
+/* ==================================================
+   Application
+   ================================================== */
+
+.app-shell {
+    min-height: 100vh;
+    background: #ffffff;
+    color: #202020;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 .license-page {
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px 32px;
 }
+
+/* ==================================================
+   Thème sombre
+   ================================================== */
+
+.app-shell.dark-theme {
+    background: #1e1e1e;
+    color: #f0f0f0;
+    color-scheme: dark;
+}
+
+
+/* --------------------------------------------------
+   Texte secondaire
+   -------------------------------------------------- */
+
+.dark-theme p {
+    color: #aaaaaa;
+}
+
+
+/* --------------------------------------------------
+   Champs de saisie
+   -------------------------------------------------- */
+
+.dark-theme input[type="text"],
+.dark-theme input[type="email"],
+.dark-theme input[type="date"],
+.dark-theme textarea {
+    background: #2b2b2b;
+    color: #f0f0f0;
+    border-color: #606060;
+}
+
+    .dark-theme input:focus,
+    .dark-theme textarea:focus {
+        border-color: #7aa2f7;
+        box-shadow: 0 0 0 1px #7aa2f7;
+    }
+
+
+/* --------------------------------------------------
+   Boutons
+   -------------------------------------------------- */
+
+.dark-theme .button-row button {
+    background: #2d2d30;
+    color: #f0f0f0;
+    border-color: #606060;
+}
+
+    .dark-theme .button-row button:hover {
+        background: #3a3a3d;
+    }
+
+.dark-theme .primary-button {
+    background: #3b3b40;
+}
+
+    .dark-theme .primary-button:hover {
+        background: #48484d;
+    }
+
+
+/* --------------------------------------------------
+   Menu principal
+   -------------------------------------------------- */
+
+.dark-theme .app-menu {
+    border-bottom-color: #505050;
+}
+
+.dark-theme .menu-title {
+    color: #f0f0f0;
+}
+
+    .dark-theme .menu-title:hover {
+        background: #333333;
+    }
+
+
+/* --------------------------------------------------
+   Menu déroulant
+   -------------------------------------------------- */
+
+.dark-theme .menu-dropdown {
+    background: #252526;
+    border-color: #606060;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+}
+
+    .dark-theme .menu-dropdown button {
+        color: #f0f0f0;
+    }
+
+        .dark-theme .menu-dropdown button:hover {
+            background: #3a3a3a;
+        }
+
+.dark-theme .menu-separator {
+    background: #606060;
+}
+
+
+/* --------------------------------------------------
+   Zone résultat
+   -------------------------------------------------- */
+
+.dark-theme .result-box {
+    background: #252526;
+    color: #f0f0f0;
+    border-color: #606060;
+}
+
 
 /* --------------------------------------------------
    Titre
@@ -102,6 +227,172 @@ input:focus {
         margin: 0;
     }
 
+/* --------------------------------------------------
+   Zone des boutons
+   -------------------------------------------------- */
+
+.actions {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+    .button-row button {
+        min-width: 130px;
+        height: 36px;
+        padding: 0 16px;
+        border: 1px solid #a0a0a0;
+        border-radius: 4px;
+        background: #f5f5f5;
+        color: #202020;
+        font: inherit;
+        cursor: pointer;
+    }
+
+        .button-row button:hover {
+            background: #e8e8e8;
+        }
+
+.primary-button {
+    font-weight: 600;
+}
+
+
+/* --------------------------------------------------
+   Résultat JSON
+   -------------------------------------------------- */
+
+.result-section {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+}
+
+.result-title {
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.result-box {
+    width: 100%;
+    min-height: 280px;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 10px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    border: 1px solid #a0a0a0;
+    border-radius: 3px;
+}
+
+/* ==================================================
+   Menu principal
+   ================================================== */
+
+.app-menu {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+
+/* --------------------------------------------------
+   Entrée principale du menu
+   -------------------------------------------------- */
+
+.menu-item {
+    position: relative;
+}
+
+.menu-title {
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: #202020;
+    font: inherit;
+    cursor: pointer;
+}
+
+    .menu-title:hover {
+        background: #eeeeee;
+    }
+
+
+/* --------------------------------------------------
+   Menu déroulant
+   -------------------------------------------------- */
+
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    padding: 4px 0;
+    background: white;
+    border: 1px solid #b0b0b0;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
+    z-index: 1000;
+}
+
+
+/* Ouverture du menu */
+
+    .menu-dropdown.open {
+        display: block;
+    }
+
+/* --------------------------------------------------
+   Commandes
+   -------------------------------------------------- */
+
+.menu-dropdown button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    color: #202020;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+    .menu-dropdown button:hover {
+        background: #eeeeee;
+    }
+
+
+/* --------------------------------------------------
+   Séparateurs
+   -------------------------------------------------- */
+
+.menu-separator {
+    height: 1px;
+    margin: 4px 8px;
+    background: #d0d0d0;
+}
+
+
+/* --------------------------------------------------
+   Zone réservée à la coche
+   -------------------------------------------------- */
+
+.menu-check {
+    display: inline-block;
+    width: 20px;
+    margin-right: 4px;
+}
 
 /* --------------------------------------------------
    Responsive
