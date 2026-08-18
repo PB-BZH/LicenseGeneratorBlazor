@@ -1,0 +1,73 @@
+@page "/"
+
+<PageTitle>PB BZH License Generator</PageTitle>
+<div class="license-page">
+    <h1>PB BZH License Generator</h1>
+    <p>Génération de licences signées</p>
+
+    <div class="license-form">
+
+        <div class="left-column">
+
+            <label>Produit :</label>
+            <input @bind="ProductId" />
+
+            <label>Licence ID :</label>
+            <input @bind="LicenseId" />
+
+            <label>Client :</label>
+            <input @bind="CustomerName" />
+
+            <label>Site :</label>
+            <input @bind="Site" />
+
+            <label>Email :</label>
+            <input @bind="EmailContact" />
+
+            <label>Machine Hash :</label>
+            <input @bind="MachineHash" />
+
+        </div>
+
+        <div class="right-column">
+
+            <label>Validité :</label>
+            <input type="date"
+                   @bind="ValidUntil" />
+
+            <label class="checkbox-row">
+                <input type="checkbox"
+                       @bind="ValidUnlimited" />
+                Licence illimitée
+            </label>
+
+            <label>Maintenance :</label>
+            <input type="date"
+                   @bind="MaintenanceUntil" />
+
+            <label class="checkbox-row">
+                <input type="checkbox"
+                       @bind="MaintenanceUnlimited" />
+                Maintenance illimitée
+            </label>
+
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    private string ProductId = "";
+    private string LicenseId = "";
+    private string CustomerName = "";
+    private string Site = "";
+    private string EmailContact = "";
+    private string MachineHash = "";
+
+    private DateTime ValidUntil = DateTime.Today;
+    private DateTime MaintenanceUntil = DateTime.Today;
+
+    private bool ValidUnlimited;
+    private bool MaintenanceUnlimited;
+}

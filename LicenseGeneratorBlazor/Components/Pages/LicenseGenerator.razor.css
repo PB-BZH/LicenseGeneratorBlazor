@@ -1,0 +1,137 @@
+:host {
+    display: block;
+}
+
+.license-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 32px;
+}
+
+/* --------------------------------------------------
+   Titre
+   -------------------------------------------------- */
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+p {
+    margin-top: 4px;
+    margin-bottom: 24px;
+    color: #808080;
+}
+
+
+/* --------------------------------------------------
+   Formulaire général
+   -------------------------------------------------- */
+
+.license-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+
+/* --------------------------------------------------
+   Colonnes gauche et droite
+   -------------------------------------------------- */
+
+.left-column,
+.right-column {
+    display: grid;
+    grid-template-columns: 115px minmax(0, 1fr);
+    gap: 10px 10px;
+    align-items: center;
+}
+
+
+/* --------------------------------------------------
+   Labels
+   -------------------------------------------------- */
+
+label {
+    margin: 0;
+}
+
+
+/* --------------------------------------------------
+   Champs de saisie
+   -------------------------------------------------- */
+
+input[type="text"],
+input[type="email"],
+input[type="date"] {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 7px 9px;
+    border: 1px solid #b0b0b0;
+    border-radius: 3px;
+    font: inherit;
+}
+
+
+/* --------------------------------------------------
+   Focus
+   -------------------------------------------------- */
+
+input:focus {
+    outline: none;
+    border-color: #5b9bd5;
+    box-shadow: 0 0 0 1px #5b9bd5;
+}
+
+
+/* --------------------------------------------------
+   Cases à cocher
+   -------------------------------------------------- */
+
+.checkbox-row {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .checkbox-row input[type="checkbox"] {
+        margin: 0;
+    }
+
+
+/* --------------------------------------------------
+   Responsive
+   -------------------------------------------------- */
+
+@media (max-width: 800px) {
+
+    :host {
+        padding: 16px;
+    }
+
+    .license-form {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .left-column,
+    .right-column {
+        grid-template-columns: 150px minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+
+    .left-column,
+    .right-column {
+        grid-template-columns: 1fr;
+    }
+
+    .checkbox-row {
+        grid-column: 1;
+    }
+}
